@@ -2,6 +2,8 @@
 
 import json
 import logging
+import os
+import sys
 
 import jpdb
 
@@ -32,6 +34,9 @@ def root():
     return {'error': f'unsupported action {act}'}
 
 if __name__ == '__main__':
+    if not 'JPDB_SID' in os.environ:
+        logging.getLogger().fatal('JPDB_SID must be in env')
+        sys.exit(1)
     cli.show_server_banner = lambda *args: None
     logging.getLogger('werkzeug').setLevel(logging.WARNING)
     app.run(port=8765)
